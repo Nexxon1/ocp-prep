@@ -1,4 +1,4 @@
-package de.mino;
+package de.mino.chapter4.funcinterfaces;
 
 import java.util.HashMap;
 import java.util.Map;

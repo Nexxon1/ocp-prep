@@ -1,4 +1,4 @@
-package de.mino;
+package de.mino.chapter4.optional;
 
 import java.util.Optional;
 

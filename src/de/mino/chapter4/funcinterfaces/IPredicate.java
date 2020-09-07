@@ -1,4 +1,4 @@
-package de.mino;
+package de.mino.chapter4.funcinterfaces;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -24,7 +24,7 @@ public class IPredicate {
         Predicate<String> egg = s -> s.contains("egg");
         Predicate<String> brown = s -> s.contains("brown");
         Predicate<String> brownEggs = s -> s.contains("egg") && s.contains("brown");
-        Predicate<String> otherEggs = s -> s.contains("egg") && ! s.contains("brown");
+        Predicate<String> otherEggs = s -> s.contains("egg") && !s.contains("brown");
 
         System.out.println(brownEggs.test("i have brown eggs so this is true"));
         System.out.println(brownEggs.test("i have other eggs so this is false"));
