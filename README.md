@@ -10,15 +10,15 @@ that were added with Java8 to the *java.util.function* package with simple use c
 
 | Functional Interfaces | #Parameters | Return Type | Single Abstract Method |
 |-----------------------|--------------|-------------|------------------------|
-| Supplier<T>           | 0            | T           | get                    |
-| Consumer<T>           | 1 (T)        | void        | accept                 |
+| Supplier&lt;T>           | 0            | T           | get                    |
+| Consumer&lt;T>           | 1 (T)        | void        | accept                 |
 | BiConsumer<T, U>      | 2 (T, U)     | void        | accept                 |
-| Predicate<T>          | 1 (T)        | boolean     | test                   |
+| Predicate&lt;T>          | 1 (T)        | boolean     | test                   |
 | BiPredicate<T, U>     | 2 (T, U)     | boolean     | test                   |
 | Function<T, R>        | 1 (T)        | R           | apply                  |
 | BiFunction<T, U, R>   | 2 (T, U)     | R           | apply                  |
-| UnaryOperator<T>      | 1 (T)        | T           | apply                  |
-| BinaryOperator<T>     | 2 (T, T)     | T           | apply                  |
+| UnaryOperator&lt;T>      | 1 (T)        | T           | apply                  |
+| BinaryOperator&lt;T>     | 2 (T, T)     | T           | apply                  |
 
 ### Optional
 The Optional type was also added with Java 8. It can be used to express "we don't know" or "not applicable".
@@ -57,11 +57,43 @@ Examples are shown in the *'streams'* package.
 | Method                              | What happens for Infinite Streams? | Return Value | Reduction |
 |-------------------------------------|------------------------------------|--------------|-----------|
 | count()                             | Does not terminate                 | long         | Yes       |
-| min()/ max()                        | Does not terminate                 | Optional<T>  | Yes       |
-| findAny()/ findFirst()              | Terminates                         | Optional<T>  | No        |
+| min()/ max()                        | Does not terminate                 | Optional&lt;T>  | Yes       |
+| findAny()/ findFirst()              | Terminates                         | Optional&lt;T>  | No        |
 | allMatch()/ anyMatch()/ noneMatch() | Sometimes terminates               | boolean      | No        |
 | forEach()                           | Does not terminate                 | void         | No        |
 | reduce()                            | Does not terminate                 | Varies       | Yes       |
 | collect()                           | Does not terminate                 | Varies       | Yes       |
 
 
+## Primitive Streams
+The package 'primitivestreams' shows how to use primitive streams.
+
+There are 3 types of primitive streams in Java:
+1. **IntStream** - Used for int, short, byte and char
+1. **LongStream** - Used for long
+1. **DoubleStream** - Used for double and float
+
+These primitive Streams have the regular Stream methods + convenience methods for common tasks such as calculating an average.
+ 
+There are Mapping methods to map a stream to another Stream type (This is the case for all Streams - Stream, IntStream, LongStream, DoubleStream)
+
+There are special functional Interfaces for the primitive Streams. They are the equivalent to the general functional Interfaces we thematized in the package 'funcinterfaces'
+- IntSupplier
+- IntConsumer
+- IntPredicate
+- IntFunction
+- IntUnaryOperator
+- IntBinaryOperator
+- (Same for Long and Double)
+
+The type name tells us what primitive type is involved. 
+ 
+### Optional with primitive Streams
+There are 3 types of Optional primitives
+1. OptionalInt
+1. OptionalLong
+1. OptionalDouble
+
+The difference to a regular Optional is that a regular Optional such as `Optional<Double>` is for the Double wrapper class whereas the OptionalDouble is for the primitive double.
+
+## Working with advanced Stream Pipeline Concepts
