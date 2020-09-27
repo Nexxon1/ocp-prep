@@ -97,3 +97,13 @@ There are 3 types of Optional primitives
 The difference to a regular Optional is that a regular Optional such as `Optional<Double>` is for the Double wrapper class whereas the OptionalDouble is for the primitive double.
 
 ## Working with advanced Stream Pipeline Concepts
+This chapter is in the 'advancedstreamconcepts' package.
+
+The class `AdvancedStreamPipeline` contains the following topics:
+
+Contains an example that proves that Streams are lazily evaluated.
+Shows that some of the intermediate operations for Streams are also available for Optional.
+Points out the problematic with checked Exceptions and Functional Interfaces.
+
+The class `CollectingResults` Shows many predefined collectors. (Remember that Collectors are used in the terminal operation `collect()`)
+It includes `joining()`, `averagingInt()`, `toCollection()`, `toMap()`, `groupingBy()` and`partitioningBy()`
