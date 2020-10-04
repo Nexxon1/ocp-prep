@@ -18,6 +18,7 @@ These are methods provided by java.lang.Object so they can be overridden by any 
 **boolean equals(Object obj)** 
 - Java uses *==* to compare primitives and to check if two variables refer to the same object.
 - The implementation in the *Object* class does the same: `return (this == obj);`
+- Should return false when the object passed is null or of the wrong type
 - We can override this method with an own implementation of when objects of a class are considered equal. E.g.:
 ```
 @Override 
@@ -38,6 +39,10 @@ public boolean equals(Object obj) {
     - The result of hashCode() must not change. So don't include variables that change for an object (e.g. include the name but not the weight)
     - If equals() returns true, then calling hashCode() on these objects must return the same result. --> This means that hashCode() can only use a subset of the variables that equals() uses.
     - If equals() returns false, then calling hashCode() on these objects can return the same result.
+
+### Enums
+See the *enums* package.
+An enumeration is like a fixed set of static final constants with the advantage that we have type-safe checking at compile time.
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
