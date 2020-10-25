@@ -44,6 +44,35 @@ public boolean equals(Object obj) {
 See the *enums* package.
 An enumeration is like a fixed set of static final constants with the advantage that we have type-safe checking at compile time.
 
+
+## Chapter 2 - Design Patterns and Principles
+### Designing an Interface
+- Interface = abstract data type, similar to a class that defines public abstract methods
+- Classes implementing the interface must provide an implementation for the public abstract methods.
+- Methods in an interface are public & abstract by default. (Compiler adds public and abstract to all methods that are not static or default)
+- Interface can include constant (public static final) variables, default methods and static methods. Default methods can be optionally overridden.
+- An interface may extend another interface. An interface can't extend a class. A class can't extend an interface.
+    - Interfaces provide limited support for multiple inheritance because a class may implement multiple interfaces
+    - Interfaces may not be marked final or be instantiated directly
+    - If a class/interface inherits two default methods with the same signature and doesn't provide its own implementation it fails to compile.
+- Example: `public class A implements B, C {}` --> An instance of A may be passed to any method that accepts A, B, C or java.lang.Object as input parameter
+
+### Purpose of an Interface
+- Develop code without having access to the underlying implementation.
+- Work in parallel - Team A develops Code that *uses* the interface (and maybe provides a mock implementation). Team B develops code that *implements* the interface
+
+### Introducing Functional Programming
+For examples see the package *'funcinterfaces'*.
+- A **Functional Interface** has a single abstract method.
+- They are the basis for lambda expressions in functional programming.
+- A lambda expression is a block of code that gets passed around, like an anonymous method.
+- Optionally use the `@FunctionalInterface` Annotation so the compiler detects if the Interface has more than one abstract method or no abstract methods at all.
+
+### Implementing Functional Interfaces with Lambdas
+See the package *'simple_lambdas'*.
+Shows a simple example on how to implement functional interfaces using lambda expressions.
+
+
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
 The package *'funcinterfaces'* shows the common functional interfaces
