@@ -1,8 +1,20 @@
 package de.mino.chapter2.simple_lambdas;
 
+import java.util.function.Predicate;
+
 public class FindMatchingAnimals {
 
   private static void print(Animal animal, CheckTrait trait) {
+    if (trait.test(animal)) {
+      System.out.println(animal);
+    }
+  }
+
+  /**
+   * The same can be accomplished with the functional interface Predicate from Java. It does the
+   * same as our CheckTrait interface but with generics so it can be reused.
+   */
+  private static void print2(Animal animal, Predicate<Animal> trait) {
     if (trait.test(animal)) {
       System.out.println(animal);
     }

@@ -72,6 +72,21 @@ For examples see the package *'funcinterfaces'*.
 See the package *'simple_lambdas'*.
 Shows a simple example on how to implement functional interfaces using lambda expressions.
 
+### Understanding Lambda Syntax & Spotting invalid lambdas
+- Many parts are optional. The following are equivalent.
+1. `a -> a.canHop()`
+2. `(Animal a) -> { return a.canHop(); }`
+- Left side of a lambda: parameter(s)
+- Right side of a lambda: body
+- Arrow: separates the parameter(s) from the body.
+- The parentheses () can be omitted, if there is exactly 1 input parameter and the parameter type is not explicitly stated in the expression.
+    - For 0 or more than 1 parameter the parentheses are required.
+    - The parameter types don't need to be specified. (But if you specify the type, it needs to be specified for all parameters)
+- For single line bodies we can omit the braces {}, semi-colon and return statement.
+    - Once its more than 1 line braces, semi-colons (for each statement) and a return statement is required
+    - When the return type is void, the return statement is optional
+- You can't redeclare a local variable so this is invalid: `(a, b) -> { int a = 0; return 5; }`
+
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
