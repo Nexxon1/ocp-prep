@@ -87,6 +87,38 @@ Shows a simple example on how to implement functional interfaces using lambda ex
     - When the return type is void, the return statement is optional
 - You can't redeclare a local variable so this is invalid: `(a, b) -> { int a = 0; return 5; }`
 
+### Implementing Polymorphism
+See chapter *'polymorphism'*
+- Is the ability of an interface to support multiple underlying forms. This allows multiple types of objects to be passed to a single method or class.
+
+### Distinguishing between an Object and a Reference
+- Objects are accessed by reference
+    - You never have direct access to the memory of the object itself. To be exact, though, the object is an entity that exists in memory, allocated by the JRE
+- Regardless of the reference for the object in memory, the object itself doesn't change
+```
+// Example: 
+Lemur lemur = new Lemur();
+Object lemurAsObject = lemur;
+```
+- Even though the Lemur object has been assigned a reference with a different type (here of type Object), the object itself has not changed. It still exists as a Lemur object in memory.
+- However the ability to access methods changed. With the lemurAsObject reference we can't access the methods within the Lemur class. (Explicit cast would be needed)
+
+Summary:
+1. The **type of object determines** which **properties** exist within the object in memory
+2. The **type of the reference** to the object **determines which methods and variables are accessible** to the Java program
+
+### Casting Object References
+- We can reclaim access to all fields and methods of the object by casting it back to the specific subclass it came from:
+```
+Lemur lemur = new Lemur();
+Primate primate = lemur; // Primate only has access to the methods/fields defined in the Primate class
+Lemur lemur2 = (Lemur) primate; // Still the same object, but now we gained back access to all its methods/fields 
+```
+Rules of casting:
+1. Casting an object from a subclass to a superclass doesn't require an explicit cast.
+1. Casting an object from a superclass to a subclass requires an explicit cast.
+1. The compiler will not allow casts to unrelated types.
+1. Even when the code compiles without issue, an exception may be thrown at runtime if the object being cast is not actually an instance of that class.
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
