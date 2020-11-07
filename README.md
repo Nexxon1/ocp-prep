@@ -57,9 +57,11 @@ An enumeration is like a fixed set of static final constants with the advantage 
     - If a class/interface inherits two default methods with the same signature and doesn't provide its own implementation it fails to compile.
 - Example: `public class A implements B, C {}` --> An instance of A may be passed to any method that accepts A, B, C or java.lang.Object as input parameter
 
-### Purpose of an Interface
+#### Purpose of an Interface
 - Develop code without having access to the underlying implementation.
 - Work in parallel - Team A develops Code that *uses* the interface (and maybe provides a mock implementation). Team B develops code that *implements* the interface
+
+___
 
 ### Introducing Functional Programming
 For examples see the package *'funcinterfaces'*.
@@ -68,11 +70,11 @@ For examples see the package *'funcinterfaces'*.
 - A lambda expression is a block of code that gets passed around, like an anonymous method.
 - Optionally use the `@FunctionalInterface` Annotation so the compiler detects if the Interface has more than one abstract method or no abstract methods at all.
 
-### Implementing Functional Interfaces with Lambdas
+#### Implementing Functional Interfaces with Lambdas
 See the package *'simple_lambdas'*.
 Shows a simple example on how to implement functional interfaces using lambda expressions.
 
-### Understanding Lambda Syntax & Spotting invalid lambdas
+#### Understanding Lambda Syntax & Spotting invalid lambdas
 - Many parts are optional. The following are equivalent.
 1. `a -> a.canHop()`
 2. `(Animal a) -> { return a.canHop(); }`
@@ -87,11 +89,13 @@ Shows a simple example on how to implement functional interfaces using lambda ex
     - When the return type is void, the return statement is optional
 - You can't redeclare a local variable so this is invalid: `(a, b) -> { int a = 0; return 5; }`
 
+___
+
 ### Implementing Polymorphism
 See chapter *'polymorphism'*
 - Is the ability of an interface to support multiple underlying forms. This allows multiple types of objects to be passed to a single method or class.
 
-### Distinguishing between an Object and a Reference
+#### Distinguishing between an Object and a Reference
 - Objects are accessed by reference
     - You never have direct access to the memory of the object itself. To be exact, though, the object is an entity that exists in memory, allocated by the JRE
 - Regardless of the reference for the object in memory, the object itself doesn't change
@@ -107,7 +111,7 @@ Summary:
 1. The **type of object determines** which **properties** exist within the object in memory
 2. The **type of the reference** to the object **determines which methods and variables are accessible** to the Java program
 
-### Casting Object References
+#### Casting Object References
 - We can reclaim access to all fields and methods of the object by casting it back to the specific subclass it came from:
 ```
 Lemur lemur = new Lemur();
@@ -119,6 +123,80 @@ Rules of casting:
 1. Casting an object from a superclass to a subclass requires an explicit cast.
 1. The compiler will not allow casts to unrelated types.
 1. Even when the code compiles without issue, an exception may be thrown at runtime if the object being cast is not actually an instance of that class.
+
+___
+
+### Understanding Design Principles
+- See package design_principles
+- A design principle is an established idea or best practice. They lead to:
+    - Lead to more logical code
+    - Code that's easier to understand 
+    - Classes that can be reused in other relationships or applications
+    - Code that can be maintained more easily
+
+#### Encapsulating Data
+- Fundamental principle of object-oriented design
+- Fields and methods in a class. *Private* instance members that have *public* methods to retrieve or modify data (e.g. getters, setters)
+- Idea behind this principle: Only the class itself should have direct access to its data. 
+    - Thanks to encapsulation we can ensure that an object of a class only has valid data:
+    - E.g. (See `Animal` class in the subpackage encapsulation): Non-null, non-empty species field. Age is >= 0. This can be achieved by following the encapsulation principle.
+    - This way anytime an Animal object is passed to a method, it can simply be used without any validation needed.
+
+#### Creating Java Beans
+- Since encapsulation is so prevalent in Java there is a standard for creating classes that store data, called JavaBeans. Rules:
+1. Properties are private
+1. Getters begin with `get` for non-boolean properties. Otherwise they may begin with `is` or `get`. (This does not apply for the Boolean wrapper class)
+1. Setters begin with `set`
+1. The method name must have the prefix `set/get/is` followed by the first letter of the property in uppercase, followed by the rest of the property name
+
+#### Applying the Is-a Relationship
+- See the instanceof operator which can be used to determine when an object is an instance of a class, superclass or interface
+- Example: `Cat extends Pet` --> A Cat is-a Pet
+- Is-a Relationship is known as the *inheritance test*
+- If A is-a B, then any instance of A can be treated like an instance of B
+
+#### Applying the Has-a Relationship = Composition
+- When an object contains a particular property or value
+- The has-a relationship is the property of an object having a named data object or primitive as member
+- The has-a relationship is also known as the *object composition test*
+- Example: `Bird` class and `Beak` (=Schnabel) class.
+    - Separate classes with different attributes and values
+    - The Bird class has a Beak attribute defined --> Bird has-a Beak
+- Careful when combining the Is-a and Has-a Relationship:
+    - If a parent class has-a object as protected/ public member, then any child of the parent must have that object as a member. (No problem for private members because they are not inherited in Java)
+    - Example: `Primate` class has-a `Tail`. 
+        - `Monkey extends Primate` --> No Problem. Monkey is-a Primate and has-a Tail
+        - `Chimpanzee extends Primate` --> Problem. Chimpanzee is-a Primate but does not have a Tail --> The data model would be incorrect.
+
+#### Composing Objects
+- *Object composition* is the property of constructing a class using references to other classes in order to reuse the functionality of the other classes.
+- Is an alternate to inheritance and often used to simulate polymorphic behavior that cannot be achieved via single inheritance.
+    - Example: See package `design_principles.composition` 
+
+#### Einschub: Association vs Composition vs Aggregation (Not in the OCP book)
+- Association: Foo uses Bar: 
+```
+public class Foo {
+    void myMethod(Bar bar) {
+    }
+}
+```
+- Composition: I own an object and am responsible for its lifetime. When Foo dies, so does Bar:
+```
+public class Foo {
+    private Bar bar = new Bar(); 
+}
+```
+- Aggregation: I have an object which I've borrowed from someone else. When Foo dies, Bar may live on:
+```
+public class Foo { 
+    private Bar bar; 
+    Foo(Bar bar) { 
+       this.bar = bar; 
+    }
+}
+```
+
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
