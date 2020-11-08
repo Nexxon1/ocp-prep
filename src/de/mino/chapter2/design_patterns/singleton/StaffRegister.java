@@ -1,4 +1,4 @@
-package de.mino.chapter2.design_patterns_singleton;
+package de.mino.chapter2.design_patterns.singleton;
 
 /** Example 2 to create a singleton. Here via static initialization block. */
 public class StaffRegister {

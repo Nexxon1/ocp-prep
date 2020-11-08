@@ -1,4 +1,4 @@
-package de.mino.chapter2.design_patterns_singleton;
+package de.mino.chapter2.design_patterns.singleton;
 
 /**
  * Note: There might be multiple LlamaTrainers at the Zoo but only one HayStorage location. With

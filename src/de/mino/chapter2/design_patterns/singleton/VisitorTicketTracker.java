@@ -1,4 +1,4 @@
-package de.mino.chapter2.design_patterns_singleton;
+package de.mino.chapter2.design_patterns.singleton;
 
 /**
  * Example 3: Lazy instantiation of Singletons. Delaying the creation of the singleton until the

@@ -224,7 +224,23 @@ ___
     - This results in reduced memory usage and improves the performance when an application starts up.
     - However that also means there might be a noticeable delay for the user the first time a particular type of resource is needed.
 - In applications that run across multiple computers, the static singleton solution starts to require special consideration, as each computer would have its own JVM. So a singleton could be implemented with a database or queue server rather than a static object.
-     
+
+#### Creating Immutable Object
+- Goal is to create **read-only** objects that can be shared and used by multiple classes
+- The state of an immutable object does not change after they are created.
+- Thread safe (because the state never changes)
+1. Use a constructor to set all properties.
+1. Mark all instance variables `private` and `final`
+1. No setters
+1. Don't allow referenced mutable objects to be modified or accessed directly
+    - Example: No getter for an ArrayList - otherwise we could modify the contents since an ArrayList itself is mutable. Instead create wrapper methods e.g. to get an element of the List or create a copy when returning the List. The Collections API also has a convenient `Collections.unmodifiableList()` method.
+1. Prevent methods from being overridden --> Mark the class or methods with `final` (or make the constructor private and use the factory pattern)
+- Example: See package `design_patterns.immutable`, class `Animal`
+
+#### "Modifying" an Immutable Object
+- To be exact you can't modify immutable objects.
+- We can create a new immutable object that contains all of the same information as the original object + whatever we want to change.
+
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces

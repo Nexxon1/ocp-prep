@@ -1,4 +1,4 @@
-package de.mino.chapter2.design_patterns_singleton;
+package de.mino.chapter2.design_patterns.singleton;
 
 /** Example 1 for the singleton pattern. */
 public class HayStorage {
