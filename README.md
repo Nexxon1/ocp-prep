@@ -241,6 +241,29 @@ ___
 - To be exact you can't modify immutable objects.
 - We can create a new immutable object that contains all of the same information as the original object + whatever we want to change.
 
+#### Builder Pattern (Not relevant for OCP Exam)
+- Commonly used for objects that require numerous values to be set at the time the object is instantiated.
+- Imagine: Constructor with 3 input parameters. Over the time the constructor grows and has 5 more input parameters
+    - Problem: We have to add five new values to the constructor which makes it hard to create such an object
+    - Problem: Every time we add a parameter, Users of the class are required to update their constructor calls --> difficult to use & maintain
+    - Possible solution 1: Several constructors --> Problem: can be difficult to manage
+    - Possible solution 2: Setter methods --> Problem: The object is not immutable and maybe not possible because the new attributes might depend on each other
+    - Best solution: **Builder pattern** - The parameters are passed to a builder object through method chaining. A final build call will then create that object. This is also commonly used for immutable objects, since they don't have setters. See package `design_patterns.builder`.
+- Setters of the Builder return an instance of the Builder itself - `this`
+    - That way the Builder methods can be chained together and be called in any order.
+- The `build()` Method actually creates the object we want.
+    - We can also add some validation in the build() method to check whether all required fields got set.
+    - Or we can set default values for anything the user failed to specify on the builder object.
+- Leads to more maintainable code
+- Tightly coupled vs Loosely coupled Code
+    - **Tightly coupled**: Classes are highly dependent - A minor change in one class may greatly impact the other class
+    - **Loosely coupled**: Classes with minimal dependencies on each other. This is preferred in practice.
+    - In the Builder Pattern the class and its Builder are tightly coupled. In this case that's fine because it is required.
+    - Often the Builder is written as static inner class or at least in the same package. 
+        - Advantage: If one is changed, the other can be quickly updated.
+        - Advantage: The constructor of the class can be made private which forces users to use the Builder for creating the actual object they want.
+          
+
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
