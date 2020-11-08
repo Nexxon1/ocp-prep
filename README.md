@@ -127,7 +127,7 @@ Rules of casting:
 ___
 
 ### Understanding Design Principles
-- See package design_principles
+- See package *'design_principles'*
 - A design principle is an established idea or best practice. They lead to:
     - Lead to more logical code
     - Code that's easier to understand 
@@ -197,6 +197,34 @@ public class Foo {
 }
 ```
 
+___
+
+### Working with Design Patterns
+- Design pattern = An established general solution to a commonly occurring software development problem.
+- In the next chapter we see 4 *creational patterns* (= Design pattern that manages the creation of objects inside an application)
+
+#### Applying the Singleton Pattern
+- Creating an object in memory only once in an application and have it shared by multiple classes. 
+- That object is sharable by all classes and threads.
+- Example (see `design_patterns.singleton`: Manage the amount of hay available for food to the zoo animals across all classes.
+    - Solution 1: Pass the same `HayManager` object to every class and method that uses it. Problem: Will result in lots of pointers and is hard to manage.
+    - Solution 2: Create a singleton `HayManager` object. --> No need to pass it around the application
+- Singletons may improve performance by loading reusable data that would otherwise be time consuming to store and reload each time it is needed
+- Singletons are created as `private static` variables within the class, often with the name `instance`
+- They are accessed via a single `public static` method, often named `getInstance()`, which returns the reference to the singleton object.
+- All **constructors** are marked **private**. This ensures that no other class is capable of instantiation another version of the class. (This also implicitly makes the class final.) 
+- The methods have the modifier `synchronized` which prevents two processes from running the same method at the exact same time
+- Another approach to create a singleton is via a static initialization block (see the `StaffRegister` class)
+- Singletons are commonly used for configuration data, reusable data caches, to coordinate access to shared resources etc.
+
+#### Applying Lazy Instantiation to Singletons
+- Another technique is to delay the creation of the singleton until the first time the getInstance() method is called.
+    - The creation itself is in the `getInstance()` method. There is a check - when the instance is null, create a new instance, otherwise return it. (See the `VisitorTicketTracker` class)
+- Lazy instantiation is a software design pattern where we create a reusable object the first time it is requested.
+    - This results in reduced memory usage and improves the performance when an application starts up.
+    - However that also means there might be a noticeable delay for the user the first time a particular type of resource is needed.
+- In applications that run across multiple computers, the static singleton solution starts to require special consideration, as each computer would have its own JVM. So a singleton could be implemented with a database or queue server rather than a static object.
+     
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
