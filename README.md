@@ -263,7 +263,19 @@ ___
         - Advantage: If one is changed, the other can be quickly updated.
         - Advantage: The constructor of the class can be made private which forces users to use the Builder for creating the actual object they want.
           
-
+#### Factory Pattern (Not relevant for OCP Exam)
+- Write code that creates objects in which the precise type of the object may not be known until runtime.
+- That way we are only loosely coupling the underlying creation implementation.
+- Using a factory class to produce instances of objects based on a set of input parameters.
+- Similar to the builder pattern but focused on supporting class polymorphism.
+- Factory patterns are often implemented using `static` methods that return objects and do not require a pointer to an instance of the factory class (because it is a static method)
+- Good practice to postfix `Factory` to the class name of the Factory
+- Supports loose coupling between the class that the Factory produces and the class using the Factory. We can change the rules in the Factory without any other code changes.
+- Example see the `design_patterns.factory` package.
+    - Abstract `Food` class with 3 implementations: `Fish, Hay, Pellets`
+    - `FoodFactory` with a `Food getFood()` method that returns specific Food depending on the input
+    - `ZooKeeper` that calls `FoodFactory.getFood()` with some input parameter to get Food. 
+    - Thanks to the FoodFactory the `ZooKeeper` and `Food` class is loosely coupled. 
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
