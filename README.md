@@ -277,6 +277,62 @@ ___
     - `ZooKeeper` that calls `FoodFactory.getFood()` with some input parameter to get Food. 
     - Thanks to the FoodFactory the `ZooKeeper` and `Food` class is loosely coupled. 
 
+## Chapter 3 - Generics and Collections
+### Reviewing OCA Collections
+- **ArrayList** implements List, which implements Collection which implements Iterable
+    - Is an object that contains other object. It can't contain primitives
+- **Array** is a built-in data structure that contains other objects or primitives
+- See package `oca_collections`
+
+### Working with Generics
+- Generics allow you to write and use parameterized types.
+```
+List<String> names = new ArrayList<String>();
+names.add(new StringBuilder("Webby"); // Compile time error
+// Without Generics there will be an exception at runtime if you only want to operate on Strings
+```
+#### Generic classes
+- Declare a formal type parameter in angle brackets: `public class Crate<T> {}` (see *custom_class* package)
+- That generic Type `T` is available anywhere within the Crate class.
+- When instantiating the class you tell the compiler what T should be for that particular Instance: `Crate<ELephant> elephantCrate = new Crate<>();`
+Naming conventions:
+
+| Letter       | Meaning                              |
+|--------------|--------------------------------------|
+| E            | Element                              |
+| K            | Map Key                              |
+| V            | Map Value                            |
+| N            | Number                               |
+| T            | Generic data type                    |
+| S, U, V, ... | When multiple generic types are used |
+
+####### Generic interfaces
+- Interfaces can also declare a formal type parameter. (see *custom_interface* package)
+- Classes implementing that interface have 3 ways to deal with the generic type:
+    1. Specify the generic type in the class. And implement the methods with that specified type.
+    1. Make the class itself generic and implement the method with the generic type specified in the class. (The name of the generic type can be the same as in the interface)
+    1. Not use generics at all (Not recommended!) - Replace the generic type with *Object*
+    
+#### Generics behind the scenes & limitations
+Behind the scenes the compiler replaces all Generics with *Object*. 
+This way there is only one class needed for class that uses generics. That process is called **type erasure**.
+The compiler then adds the relevant casts for your code to work with the actual specified types.
+- Most limitations of Generics are due to type erasure. You can't do the following:
+    - Call the constructor: new T() is not allowed because at runtime it would be 'new Object()'
+    - Create an array of that static type: Because you would be creating an Array of Objects
+    - Call instanceof: Because at runtime List<Integer> and List<String> look the same because of type erasure
+    - Use primitive type as generic parameter: However you can just use the wrapper class
+    - Create a static variable as generic type parameter: Because the type is linked to the instance of the class
+
+#### Generic Methods
+- Before the return type we declare the formal type parameter (e.g. *\<T>*): 
+    - `public static <T> Crate<T> ship(T t) {...}`
+    - Formal type parameter \<T>
+    - Return type Crate\<T>
+    - Parameter type T
+- The formal type parameter has to be specified on the method unless it can obtain the generic formal type parameter from the class/ interface
+
+
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
 The package *'funcinterfaces'* shows the common functional interfaces
