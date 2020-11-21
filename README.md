@@ -306,7 +306,7 @@ Naming conventions:
 | T            | Generic data type                    |
 | S, U, V, ... | When multiple generic types are used |
 
-####### Generic interfaces
+#### Generic interfaces
 - Interfaces can also declare a formal type parameter. (see *custom_interface* package)
 - Classes implementing that interface have 3 ways to deal with the generic type:
     1. Specify the generic type in the class. And implement the methods with that specified type.
@@ -332,6 +332,20 @@ The compiler then adds the relevant casts for your code to work with the actual 
     - Parameter type T
 - The formal type parameter has to be specified on the method unless it can obtain the generic formal type parameter from the class/ interface
 
+#### Bounds
+- Bounded wildcards restrict which types we can use for the formal type parameter
+- A **bounded parameter type** is a generic type that specifies a bound for the generic
+- A **wildcard generic type** is an unknown generic type represented with a question mark '**?**'
+
+| Type of bound             | Syntax         | Example                                                          |
+|---------------------------|----------------|------------------------------------------------------------------|
+| Unbounded wildcard        | ?              | List<?> l = new ArrayList<String>();                             |
+| Wildcard with upper bound | ? extends type | List<? extends Exception> l = new ArrayList<RuntimeException>(); |
+| Wildcard with lower bound | ? super typ    | List<? super Exception> l = new ArrayList<Object>();             |
+
+##### Unbounded Wildcards
+- Represents any data type
+- '?' is used to specify that any type is okay
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
