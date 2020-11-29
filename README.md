@@ -292,9 +292,9 @@ names.add(new StringBuilder("Webby"); // Compile time error
 // Without Generics there will be an exception at runtime if you only want to operate on Strings
 ```
 #### Generic classes
-- Declare a formal type parameter in angle brackets: `public class Crate<T> {}` (see *custom_class* package)
+- Declare a **formal type parameter** in angle brackets: `public class Crate<T> {}` (see *custom_class* package)
 - That generic Type `T` is available anywhere within the Crate class.
-- When instantiating the class you tell the compiler what T should be for that particular Instance: `Crate<ELephant> elephantCrate = new Crate<>();`
+- When instantiating the class you tell the compiler what T should be for that particular Instance: `Crate<Elephant> elephantCrate = new Crate<>();`
 Naming conventions:
 
 | Letter       | Meaning                              |
@@ -315,12 +315,12 @@ Naming conventions:
     
 #### Generics behind the scenes & limitations
 Behind the scenes the compiler replaces all Generics with *Object*. 
-This way there is only one class needed for class that uses generics. That process is called **type erasure**.
+This way there is only one class file needed for a class that uses generics. That process is called **type erasure**.
 The compiler then adds the relevant casts for your code to work with the actual specified types.
 - Most limitations of Generics are due to type erasure. You can't do the following:
     - Call the constructor: new T() is not allowed because at runtime it would be 'new Object()'
     - Create an array of that static type: Because you would be creating an Array of Objects
-    - Call instanceof: Because at runtime List<Integer> and List<String> look the same because of type erasure
+    - Call instanceof: Because at runtime List\<Integer> and List\<String> look the same because of type erasure
     - Use primitive type as generic parameter: However you can just use the wrapper class
     - Create a static variable as generic type parameter: Because the type is linked to the instance of the class
 
@@ -331,6 +331,7 @@ The compiler then adds the relevant casts for your code to work with the actual 
     - Return type Crate\<T>
     - Parameter type T
 - The formal type parameter has to be specified on the method unless it can obtain the generic formal type parameter from the class/ interface
+- Example see the *generic_methods* package
 
 #### Bounds
 - Bounded wildcards restrict which types we can use for the formal type parameter
@@ -339,13 +340,37 @@ The compiler then adds the relevant casts for your code to work with the actual 
 
 | Type of bound             | Syntax         | Example                                                          |
 |---------------------------|----------------|------------------------------------------------------------------|
-| Unbounded wildcard        | ?              | List<?> l = new ArrayList<String>();                             |
-| Wildcard with upper bound | ? extends type | List<? extends Exception> l = new ArrayList<RuntimeException>(); |
-| Wildcard with lower bound | ? super typ    | List<? super Exception> l = new ArrayList<Object>();             |
+| Unbounded wildcard        | ?              | List<?> l = new ArrayList\<String>();                             |
+| Wildcard with upper bound | ? extends type | List<? extends Exception> l = new ArrayList\<RuntimeException>(); |
+| Wildcard with lower bound | ? super typ    | List<? super Exception> l = new ArrayList\<Object>();             |
 
 ##### Unbounded Wildcards
 - Represents any data type
 - '?' is used to specify that any type is okay
+- See *bounds.unbounded_wildcard* package
+
+##### Upper-Bounded Wildcards
+```List<? extends Number> list = new ArrayList<Integer>();```
+- Any class that extends Number or Number itself can be used as the formal parameter --> e.g. Integer
+- When working with upper bounds or unbounded wildcards in Lists, the List becomes logically immutable
+    - Technically you can still remove elements to the list but not add elements
+- See *bounds.upper_bounded_wildcard* package
+
+##### Lower-Bounded Wildcards
+- With a lower bound we say that we want an Object of that class or Objects that are a superclass or that class. 
+    - ```List<? super String> list; // A list of String objects or objects that are a superclass of String```
+- Lower-Bounded Wildcards are needed when trying to add different types of Lists (e.g. ```List<String> and List<Object>```)to the same method.
+Explanation:
+
+| Code                                                                             | Method compiles                          | Can pass a List\<String>                  | Can pass a List\<Object> |
+|----------------------------------------------------------------------------------|------------------------------------------|-------------------------------------------|--------------------------|
+| public static void addSound(List\<?> list) { list.add("quack"); }                | No (unbounded generics are immutable)    | Yes                                       | Yes                      |
+| public static void addSound(List\<? extends Object> list) { list.add("quack"); } | No (upperbounded generics are immutable) | Yes                                       | Yes                      |
+| public static void addSound(List\<Object> list)  { list.add("quack"); }          | Yes                                      | No (with generics, must pass exact match) | Yes                      |
+| public static void addSound(List\<? super String> list) { list.add("quack"); }   | Yes                                      | Yes                                       | Yes                      |
+
+##### Putting it all together
+- The *bounds.examples* package sums the generic bound chapter up.
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
