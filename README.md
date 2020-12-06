@@ -372,6 +372,99 @@ Explanation:
 ##### Putting it all together
 - The *bounds.examples* package sums the generic bound chapter up.
 
+### Using Lists, Sets, Maps and Queues
+- Collection = Group of objects contained in a single object
+- **List** 
+    - Ordered collection of elements 
+    - Duplicates allowed 
+    - Elements can be accessed by an int index
+- **Set**
+    - Collection without duplicates
+- **Queue** 
+    - Orders its elements in a specific order for processing.
+    - Typically FiFo (First in First out) but other orders are possible e.g. LiFo (Last in First out)
+- **Map**
+    - The Elements in a Map are key/ value pairs
+    - Maps keys to values. 
+    - No duplicate keys allowed
+- **Collection** is the root interface. List, Set and Queue implement that interface. 
+Map doesn't implement the Collection interface but it is still considered a collection (note the lowercase) because it contains a group of elements.
+The reason it doesn't implement Collection is because different methods are needed due to the key/ value pairs.
+
+#### Common Collection Methods
+- The Collection Framework uses generics. 
+- Provides a bunch of useful methods for working with lists, sets or queues
+- See the *collections.common_methods* package
+- **add()** --> `boolean add(E element)`
+    - Inserts a new element into the Collection and returns whether it was successful 
+    - E.g. returns true for Lists, but false when trying to add duplicates to a Set
+- **remove()** --> `boolean remove(Object object)`
+    - Removes a single (the first) matching value in the Collection and returns whether the element was successfully removed.
+    - There is an overloaded remove method that uses int as the index to remove an element. Notice that that method might throw an IndexOutOfBoundsException.
+- **isEmpty()** --> `boolean isEmpty()`
+    - Looks at how many elements are in the Collection and returns true when the size is 0.
+- **size()** --> `int size()`
+    - Looks at how many elements are in the Collection and returns the amount of elements inside
+- **clear()** --> `void clear()`
+    - Discards all elements of the Collection. After that the Collection is empty and has a size of 0.
+- **contains()** --> `boolean contains(Object object)`
+    - Checks if a certain value is in the Collection.
+    - Calls the `equals()` method on each element of the ArrayList to see if there are any matches. 
+
+#### Using the List Interface
+- Used when you want an **ordered** collection that can contain **duplicate** entries. (That's what all List implementations have in common)
+- Items can be retrieved and inserted at specific positions in the list based on an int index.
+- Each element of the List has an index and that index begins with zero
+
+##### Comparing List Implementations
+**ArrayList**
+- Like a resizable array
+    - When adding elements, the ArrayList automatically grows
+- You can look up any element in constant time (O(1))
+- Adding or removing an element is slower
+- ==> Use when you are reading more often than writing
+
+##### Intermezzo - Big O Notation
+- Is used to talk about the performance of algorithms
+    - Let's you compare the order of magnitude (Grössenordnungsdifferenz) performance rather than the exact performance
+- "n" is used to reflect the number of elements or size of the data
+- The most common big O notation values:
+- **O(1) - constant time** 
+    - The size of the collection doesn't matter. The answer will always take the same amount of time to return.
+    - E.g. returning the String literal "Panda" or returning the last element of an array
+- **O(log n) - logarithmic time**
+    - A logarithm is a mathematical function that grows much more slowly than the data size
+        - E.g. log(8) at base 2 gives you 3 and log(1024) at base 2 gives you 10
+    - Is much better than linear time
+    - E.g. binary search because it doesn't look at the majority of the elements
+- **O(n) - linear time**
+    - The performance will grow linearly with respect to the size of the collection
+    - E.g. looping through a list and returning the number of elements matching "Panda"
+- **O(n²) - n squared time**
+    - Code that has nested loops where each loop goes through the data takes n squared time.
+
+**LinkedList**
+- Implements both, List and Queue
+    - Has all methods of List and additional methods to facilitate adding or removing from the beginning and/ or ending of the list.
+- You can access, add and remove from the beginning and end of the list in constant time (O(1))
+- Tradeoff: Dealing with the arbitrary (willkürlich) index takes linear time (O(n))
+- Good choice when you'll be using the List as a Queue
+
+##### Working with List Methods
+- The methods in Lists are for working with indexes. Here the most common methods:
+
+| Method                         | Description                                                  |
+|--------------------------------|--------------------------------------------------------------|
+| void add(E element)            | Adds element to end                                          |
+| void add(int index, E element) | Adds element at index and moves the rest toward the end      |
+| E get(int index)               | Returns element at index                                     |
+| int indexOf(Object o)          | Returns first matching index or -1 if not found              |
+| int lastIndexOf(Object o)      | Returns last matching index or -1 if not found               |
+| void remove(int index)         | Removes element at index and moves the rest toward the front |
+| E set(int index, E e)          | Replaces element at index and returns original               |
+
+#### Using the Set Interface
+
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
 The package *'funcinterfaces'* shows the common functional interfaces
