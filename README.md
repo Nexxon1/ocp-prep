@@ -499,6 +499,55 @@ The reason it doesn't implement Collection is because different methods are need
 | E ceiling(E e) | Returns smallest element that is >= e, or null if no such element |
 | E higher(E e)  | Returns smallest element that is > e, or null if no such element  |
 
+#### Using the Queue Interface
+- Used when elements are added and removed in a specific order
+- Commonly used for sorting elements prior to processing them
+- By default a queue is assumed FIFO (first-in, first-out). The other common format is LIFO (last-in, first-out)
+
+##### Comparing Queue implementations
+**LinkedList**
+- Earlier we thematized `LinkedList`. Beside being a list, it is also a double-ended queue
+    - Double ended means that you can insert and remove elements from both the front and the back
+    - LinkedList implements List and Queue (which is the advantage over ArrayDeque) but isn't as efficient as a "pure" queue
+    - LinkedList works the exact same way as ArrayDeque
+
+**ArrayDeque**
+ - Is a "pure" double-ended queue
+ - Stores its elements in a resizable Array
+ - Is more efficient than a LinkedList
+ - Beside the methods that come from the Collection interface, Deque offers a lot of methods. Those are the most important ones:
+
+| Method             | Description                                                                                               | For queue | For Stack |
+|--------------------|-----------------------------------------------------------------------------------------------------------|-----------|-----------|
+| boolean add(E e)   | **Adds** an element to the **back of the queue** and returns true or throws an exception                  | Yes       | No        |
+| E element()        | Returns **next element** or throws an exception if empty queue                                            | Yes       | No        |
+| boolean offer(E e) | **Adds** an element to the **back of the queue** and returns whether successful                           | Yes       | No        |
+| E remove()         | **Removes** and returns **next element** or throws an exception if empty queue                            | Yes       | No        |
+| void push(E e)     | **Adds** an element to the **front of the queue**                                                         | Yes       | Yes       |
+| E poll()           | **Removes** and returns **next element** or returns null if empty queue --> Removes the head of the queue | Yes       | No        |
+| E peek()           | Returns **next element** or returns null if empty queue --> Returns the head of the queue                 | Yes       | Yes       |
+| E pop()            | **Removes** and returns **next element** or throws an exception if empty queue                            | No        | Yes       |
+
+- offer & add = Add elem to the back
+- push = Add elem to the front
+- peek & element = Head of the queue
+- poll & remove/pop = Remove the head
+
+- Except for push, all methods are available in the `Queue` interface as well. Push makes `ArrayDeque` a double-ended queue
+- There are basically two sets of methods
+    - One throws an exception when something goes wrong
+    - The other uses a different return value when something goes wrong
+    - offer, poll and peek methods are more commonly used than the ones with exceptions
+- Examples see the `collections.queue` package
+
+FIFO vs LIFO
+- FIFO = Stack
+    - push/ poll/ peek
+- LIFO = Single-ended queue
+    - offer/ poll/ peek
+- ArrayDeque can be used as a Stack or a Queue
+
+
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
 The package *'funcinterfaces'* shows the common functional interfaces
