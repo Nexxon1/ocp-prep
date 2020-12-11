@@ -464,6 +464,40 @@ The reason it doesn't implement Collection is because different methods are need
 | E set(int index, E e)          | Replaces element at index and returns original               |
 
 #### Using the Set Interface
+- Used when you don't want duplicate entries
+
+**HashSet**
+- Stores elements in a hash table
+    - Uses the `hashCode()` method to retrieve objects more efficiently
+- Adding elements has constant time - O(1)
+- Checking if an element is in the set has constant time - O(1)
+    - equals() is used to determine equality
+    - hashCode() is used to know which bucket to look in for the element
+    - Best case: All hash Codes of the objects are unique and Java has to call equals() on only one object
+    - Worst case: All implementations return the same hashCode and Java has to call equals() on every element of the set anyway 
+- Tradeoff: You lose the order in which you inserted the elements
+- Most commonly used form of a Set
+
+**TreeSet**
+- Stores elements in a sorted tree structure
+- Elements are always in a sorted order
+- Tradeoff: Adding and checking if an element is present need logarithmic time: O(log n)
+- TreeSet implements the Interface `NavigableSet` that lets you slice up the collection
+
+![HashSet vs TreeSet img](./src/de/mino/assets/pictures/HashSet_vs_TreeSet.png "HashSet vs TreeSet")
+
+##### Working with Set Methods
+- See package *collections.sets*
+
+##### NavigableSet Interface
+- As said, can be used when working with TreeSets: `NavigableSet<Integer> set = new TreeSet<>();`
+
+| Method         | Description                                                       |
+|----------------|-------------------------------------------------------------------|
+| E lower(E e)   | Returns greatest element that is < e, or null if no such element  |
+| E floor(E e)   | Returns greatest element that is <= e, or null if no such element |
+| E ceiling(E e) | Returns smallest element that is >= e, or null if no such element |
+| E higher(E e)  | Returns smallest element that is > e, or null if no such element  |
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces

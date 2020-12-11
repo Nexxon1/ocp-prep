@@ -1,4 +1,4 @@
-package de.mino.chapter3.collections.list_methods;
+package de.mino.chapter3.collections.lists;
 
 import java.util.ArrayList;
 import java.util.List;
