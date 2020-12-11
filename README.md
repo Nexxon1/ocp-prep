@@ -547,23 +547,109 @@ FIFO vs LIFO
     - offer/ poll/ peek
 - ArrayDeque can be used as a Stack or a Queue
 
+#### Map
+- Stores data in key value pairs
+- Values are identified by an (unique) key
+- Example: Contact list in a phone. You look up the name and get the phone number 
+    - --> A persons name would be the key and the phone number the value
+
+##### Comparing Map Implementations
+**HashMap**
+- Stores the keys in a hash table
+- Uses the `hashCode()`method of the keys to retrieve their values more efficiently
+    - Adding & retrieving the element by key have constant time - O(1) 
+- Tradeoff: You lose the order in which you inserted the elements
+    - Most of the time that is not a problem. If the order is needed you can use a `LinkedHashMap`
+
+**TreeMap**
+- Stores the keys in a sorted tree structure
+- Advantage: Keys are always in sorted order
+- Tradeoff: Adding and checking if a key is present take logarithmic time - O(log n)
+
+##### Working with Map Methods
+- Map doesn't extend `Collection` so the methods are specified on the `Map` interface
+- Many methods use the generic type parameters `K` vor Key and `V` for Value
+
+| Method                              | Description                                                      |
+|-------------------------------------|------------------------------------------------------------------|
+| void clear()                        | Removes all keys and values from the map.                        |
+| boolean isEmpty()                   | Returns whether the map is empty.                                |
+| int size()                          | Returns the number of entries (key/value pairs) in the map.      |
+| V get(Object key)                   | Returns the value mapped by key or null if none is mapped.       |
+| V put(K key, V value)               | Adds or replaces key/value pair. Returns previous value or null. |
+| V remove(Object key)                | Removes and returns value mapped to key. Returns null if none.   |
+| boolean containsKey(Object key)     | Returns whether key is in map.                                   |
+| boolean containsValue(Object value) | Returns whether value is in map.                                 |
+| Set keySet()                        | Returns *Set* of all keys.                                       |
+| Collection values()                 | Returns *Collection* of all values.                              |
+
+- See the `collections.map` package for examples with HashMap and TreeMap
+
+#### Comparing Collection types
+- Comparing the characteristics of the different Collection Framework types:
+
+| Type  | Can contain duplicate elements? | Elements ordered?                | Has keys and values? | Must add/ remove in specific order? |
+|-------|---------------------------------|----------------------------------|----------------------|-------------------------------------|
+| List  | Yes                             | Yes (by index)                   | No                   | No                                  |
+| Map   | Yes (for values)                | No                               | Yes                  | No                                  |
+| Queue | Yes                             | Yes (retrieved in defined order) | No                   | Yes                                 |
+
+- Comparing the Collection attributes:
+
+| Type                   | Java Collections Framework instance | Sorted? | Calls hashCode? | Calls compareTo? | Can contain nulls?                                           |
+|------------------------|-------------------------------------|---------|-----------------|------------------|--------------------------------------------------------------|
+| ArrayList              | List                                | No      | No              | No               | Yes                                                          |
+| LinkedList             | List, Queue                         | No      | No              | No               | Yes                                                          |
+| Stack (deprecated)     | List                                | No      | No              | No               | Yes                                                          |
+| Vector (deprecated)    | List                                | No      | No              | No               | Yes                                                          |
+| HashSet                | Set                                 | No      | Yes             | No               | Yes                                                          |
+| TreeSet                | Set                                 | Yes     | No              | Yes              | No null elements  (makes sense because cant sort with nulls) |
+| ArrayDeque             | Queue                               | No      | No              | No               | No null elements                                             |
+| HashMap                | Map                                 | No      | Yes             | No               | Yes                                                          |
+| TreeMap                | Map                                 | Yes     | No              | Yes              | No null keys  (makes sense because cant sort with nulls)     |
+| Hashtable (deprecated) | Map                                 | No      | Yes             | No               | No null keys or values                                       |
+
+Which data structures *don't* allow null values?
+- TreeSet, TreeMap - Data structures that involve sorting do not allow null values (Makes sense - you can't compare to null values to sort)
+- ArrayDeque - It has methods that use null as a meaning like poll(). It uses null to indicate that the collection is empty.
+- Hashtable (No special meaning, just old and deprecated) 
+
+Choosing the right collection type by a given description of a problem:
+- Pick the top zoo map off a stack of maps
+    - Solution: ArrayDeque
+    - Reason: Description is of a last-in, first-out structure. So a Stack is needed which is a type of Queue. (Stack is deprecated so we use the better ArrayDeque)
+- Sell tickets to people in the order they appear in the line & tell them their position in line
+    - Solution: LinkedList
+    - Reason: First-in, first-out data structure. So a Queue is needed. Since we also need indexes the only collection that meets both requirements is LinkedList. (Otherwise we could use the more efficient ArrayDeque)
+- Write down the names of all elephants you see in the zoo so you can tell them to your friend's 3-year old every time she asks. The elephants do not have unique names.
+    - Solution: ArrayList
+    - Reason: There are duplicates --> List is needed. You will be accessing the list more often than updating it because the 3-year old will ask over and over. That's why an ArrayList is better than an LinkedList here.
+- List the unique animals that you want to see at the zoo today
+    - Solution: HashSet
+    - Reason: Keyword unique --> Set is needed. There are no requirements on a sorted order so we use the most efficient Set.
+- List the unique animals that you want to see at the zoo today in alphabetical order
+    - Solution: TreeSet
+    - Reason: Keyword unique --> Set is needed. This time we need to sort so we cannot use the HashSet.
+- Look up animals based on a unique identifier
+    - Solution: HashMap
+    - Reason: Looking up by key so we need a Map. We have no requirements on ordering or sorting so we use the most efficient Map.   
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
 The package *'funcinterfaces'* shows the common functional interfaces
 that were added with Java8 to the *java.util.function* package with simple use cases.
 
-| Functional Interfaces | #Parameters | Return Type | Single Abstract Method |
+| Functional Interfaces | #Parameters  | Return Type | Single Abstract Method |
 |-----------------------|--------------|-------------|------------------------|
-| Supplier&lt;T>           | 0            | T           | get                    |
-| Consumer&lt;T>           | 1 (T)        | void        | accept                 |
+| Supplier&lt;T>        | 0            | T           | get                    |
+| Consumer&lt;T>        | 1 (T)        | void        | accept                 |
 | BiConsumer<T, U>      | 2 (T, U)     | void        | accept                 |
-| Predicate&lt;T>          | 1 (T)        | boolean     | test                   |
+| Predicate&lt;T>       | 1 (T)        | boolean     | test                   |
 | BiPredicate<T, U>     | 2 (T, U)     | boolean     | test                   |
 | Function<T, R>        | 1 (T)        | R           | apply                  |
 | BiFunction<T, U, R>   | 2 (T, U)     | R           | apply                  |
-| UnaryOperator&lt;T>      | 1 (T)        | T           | apply                  |
-| BinaryOperator&lt;T>     | 2 (T, T)     | T           | apply                  |
+| UnaryOperator&lt;T>   | 1 (T)        | T           | apply                  |
+| BinaryOperator&lt;T>  | 2 (T, T)     | T           | apply                  |
 
 ### Optional
 The Optional type was also added with Java 8. It can be used to express "we don't know" or "not applicable".
