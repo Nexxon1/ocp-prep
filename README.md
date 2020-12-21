@@ -481,6 +481,8 @@ The reason it doesn't implement Collection is because different methods are need
 **TreeSet**
 - Stores elements in a sorted tree structure
 - Elements are always in a sorted order
+    - Elements in a TreeSet need to implement the Comparable interface, otherwise an Exception is thrown
+    - The reason is that TreeSet tries to sort the elements when added to the set. That doesn't work if the element added does'nt implement the compareTo method of the Comparable interface
 - Tradeoff: Adding and checking if an element is present need logarithmic time: O(log n)
 - TreeSet implements the Interface `NavigableSet` that lets you slice up the collection
 
@@ -633,6 +635,59 @@ Choosing the right collection type by a given description of a problem:
 - Look up animals based on a unique identifier
     - Solution: HashMap
     - Reason: Looking up by key so we need a Map. We have no requirements on ordering or sorting so we use the most efficient Map.   
+
+#### Comparator vs Comparable
+- For numbers the default order is the numerical order
+- For String objects, order is defined according to the Unicode character mapping
+    - Numbers sort before letters & uppercase letters before lowercase letters
+- See package `comparison` for the upcoming chapters
+
+##### Comparable
+- Interface that can be used to order objects of a class you wrote the way you want
+```
+public interface Comparable<T> {
+    public int compareTo(T o);
+}
+```
+- Returns 0 if the current object is equal to the argument
+- Returns <0 (e.g. -1) if the current object is smaller than the argument
+- Returns >0 (e.g. 1) if the current object is larger than the argument
+
+compareTo() and equals() Consistency:
+- When implementing Comparable, you introduce new business logic to determine equality.
+- The `compareTo()` method returns `0` if two objects are equal
+- The `equals()` method returns `true` if two objects ar equal
+- These methods need to be consistent - when compareTo() returns 0, equals should return true
+    - Otherwise not all collection classes behave predictably if the compareTo() and equals() methods are not consistent
+    - If it doesn't make sense in your case to make them consistent, use the Comparator class instead for comparison.
+
+##### Comparator
+- Useful to sort objects that do not implement `Comparable` or when wanting to sort objects in different ways at different times.
+- `Comparator` is a functional interface and commonly declared using a lambda
+```
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+```
+- The logic is similar to the `compareTo()` method from `Comparable`.
+    - Returns <0 if o1 is smaller than o2 etc.
+
+Comparision between Comparable and Comparator
+
+| Difference                                        | Comparable | Comparator |
+|---------------------------------------------------|------------|------------|
+| Package name                                      | java.lang  | java.util  |
+| Interface must be implemented by class comparing? | Yes        | No         |
+| Method name in interface                          | compareTo  | compare    |
+| Number of parameters                              | 1          | 2          |
+| Common to declare using a lambda                  |            |            |
+
+##### Searching and Sorting
+- The Collections `sort` method uses the `compareTo()` method of the Comparable interface
+    - Note that this only compiles if the class you try to sort is actually implementing Comparable
+- You can also pass a Comparator to the `sort` method
+    - The class you try to sort then doesn't have to implement Comparable because the logic from the Comparator's `compare` method is used for sorting
+
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
