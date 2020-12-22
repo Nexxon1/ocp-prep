@@ -285,6 +285,7 @@ ___
 - See package `oca_collections`
 
 ### Working with Generics
+- Generics are type parameters for code
 - Generics allow you to write and use parameterized types.
 ```
 List<String> names = new ArrayList<String>();
@@ -295,6 +296,7 @@ names.add(new StringBuilder("Webby"); // Compile time error
 - Declare a **formal type parameter** in angle brackets: `public class Crate<T> {}` (see *custom_class* package)
 - That generic Type `T` is available anywhere within the Crate class.
 - When instantiating the class you tell the compiler what T should be for that particular Instance: `Crate<Elephant> elephantCrate = new Crate<>();`
+    - The diamond operator <> tells Java that the generic type matches the declaration. So it would be equivalent to write `Crate<Elephant> elephantCrate = new Crate<Elephant>();`
 Naming conventions:
 
 | Letter       | Meaning                              |
@@ -446,7 +448,7 @@ The reason it doesn't implement Collection is because different methods are need
 **LinkedList**
 - Implements both, List and Queue
     - Has all methods of List and additional methods to facilitate adding or removing from the beginning and/ or ending of the list.
-- You can access, add and remove from the beginning and end of the list in constant time (O(1))
+- You can **access, add and remove from the beginning and end** of the list in constant time (O(1))
 - Tradeoff: Dealing with the arbitrary (willkürlich) index takes linear time (O(n))
 - Good choice when you'll be using the List as a Queue
 
@@ -468,7 +470,7 @@ The reason it doesn't implement Collection is because different methods are need
 
 **HashSet**
 - Stores elements in a hash table
-    - Uses the `hashCode()` method to retrieve objects more efficiently
+    - Uses the `hashCode()` method to retrieve the (unordered) objects more efficiently
 - Adding elements has constant time - O(1)
 - Checking if an element is in the set has constant time - O(1)
     - equals() is used to determine equality
@@ -688,6 +690,103 @@ Comparision between Comparable and Comparator
 - You can also pass a Comparator to the `sort` method
     - The class you try to sort then doesn't have to implement Comparable because the logic from the Comparator's `compare` method is used for sorting
 
+##### Additions in Java 8
+- This section is about the changes in Java 8 such as method references and added methods to Collections
+
+##### Using Method References
+- *Method references* are a way to make the cort shorter
+- Code that can be inferred can be left out so you just have to mention the name of the method
+- See `java8_additions.MethodReferences`
+- The `::` operator tells Java to pass the parameters automatically into the method
+
+Quick intermezzo to understand the following examples: 
+- Consumer takes 1 parameter & returns void. 
+- Predicate takes 1 parameter & returns boolean.
+- Supplier takes no parameter & returns any type.
+
+Four formats for method references
+1. Static methods
+    - `Consumer<List<Integer>> methodRef = Collections::sort;`
+    - sort is a static method in the Collections interface. Here the long version:
+    - `Consumer<List<Integer>> lambda = l -> Collections.sort(l);`
+1. Instance methods on a particular instance
+   ```
+   String str = "abc";
+   Predicate<String> methodRef = str::startsWith;
+   Predicate<String> methodRef = str::startsWith
+   ```
+1. Instance methods on an instance to be determined at runtime
+    - `Predicate<String> methodRef = String::isEmpty;`
+    - The method we want to call (isEmpty) is declared in String. It looks like a static method but isn't. In fact it is an instance method that doesn't take any parameters.
+    Java uses the parameter supplied at runtime as the instance on which the method is called.
+    - `Predicate<String> lambda = s -> s.isEmpty();`
+1. Constructors
+    - `Supplier<ArrayList<String>> methodRef = ArrayList::new;`
+    - The constructor reference is a special type of method reference that uses new instead of a method and creates a new object.
+    - `Supplier<ArrayList<String>> lambda = () -> new ArrayList<>();`
+
+##### Removing Conditionally
+- Examples on the following sections can be found in `java8_additions.NewMethods`
+- In Collection: `default boolean removeIf(Predicate<? super E> filter)`
+    - Removes all elements that match the specified predicate. Returns true if any elements were removed.
+- Before we just had the ability to remove a specified object from a collection or the object at a specified index.
+
+##### Updating all Elements
+- In List: `default void replaceAll(UnaryOperator<E> o)`
+    - Takes 1 parameter and returns a value of the same type
+    - Let's you pass a lambda that is applied to each element in the list. The result replaces the current value of that element.
+
+##### Looping through a Collection
+- There are many approaches to looping through a Collection - Use an iterator, enhanced for loop, using a lambda, ...
+- In Iterable: `default void forEach(Consumer<? super T> action)`
+    - Performs the given action for each element
+
+##### Using Java 8 Map APIs
+**putIfAbsent**
+- `default V putIfAbsent(K key, V value)`
+    - The `put()` method just adds or updates the specific key value pair in a map
+    - `putIfAbsent()` only adds the key value pair if the specified key is not already associated with a value (or updates if the associated value is null)
+
+**merge**
+- The `merge()` method allows adding logic to determine which value for a key should be used
+- `default V merge(K key, V value, BiFunction<V, V, V> remappingFunction)` (simplified)
+    - Key is not already associated with a value or associated with null --> Add key value pair
+    - Key is already present --> Check the result of the passed BiFunction to determine the new value for that key
+    - Returns the new value associated with that key
+    - The remappingFunction is only called when there are two values to decide 
+    - When nulls as values or missing keys are involved merge simply uses the new value
+    - If the mapping function is called and returns null the key is removed from the map 
+
+**computeIfPresent**
+- `default V computeIfPresent(K key, BiFunction<K, V, V> remappingFunction)` (simplified)
+    - If the specified key if found (and non-null) it calls the BiFunction to compute a new mapping given the key and its current mapped value.
+    - Note that in this BiFunction we pass a key and value unlike the merge() function where two values are passed.
+    - If the mapping function returns null, the key is removed from the map
+
+**computeIfAbsent**
+- `default V computeIfAbsent(K key, Function<K, V> mappingFunction)`
+    - Basically the opposite of computeIfPresent()
+    - The Function only runs if the key is absent or null
+    - Since there is no value already in the map, a Function can be used instead of BiFunction
+        - For the function we only pass the key as input and return the value 
+    - If the mapping function returns null, the key isn't even added to the map
+
+To sum up here a comparison between the behavior of merge(), computeIfPresent() and computeIfAbsent() in different scenarios:
+
+| Scenario                  | merge                                                                | computeIfPresent                                           | computeIfAbsent                            |
+|---------------------------|----------------------------------------------------------------------|------------------------------------------------------------|--------------------------------------------|
+| Key already in map        | Result of function                                                   | Result of function                                         | No action                                  |
+| Key not in map            | Add new value to map                                                 | No action                                                  | Result of function                         |
+| Functional interface used | BiFunction (Takes existing value + new value. Returns the new value) | BiFunction (Takes key + existing value. Returns new value) | Function (Takes key and returns new value) |
+
+| Key has        | Mapping function returns | merge                              | computeIfPresent                   | computeIfAbsent                                      |
+|----------------|--------------------------|------------------------------------|------------------------------------|------------------------------------------------------|
+| null value     | null                     | Remove key from map                | Do not change                      | Do not change                                        |
+| null value     | Not null                 | Set key to mapping function result | Do not change                      | Add key to map with mapping function result as value |
+| Non-null value | null                     | Remove the key from map            | Remove key from map                | Do not change                                        |
+| Non-null value | Not null                 | Set key to mapping function result | Set key to mapping function result | Do not change                                        |
+| Key not in map | null                     | Add key to map                     | Do not change                      | Do not change                                        |
+| Key not in map | Not null                 | Add key to map                     | Do not change                      | Add key to map with mapping function result as value |
 
 ## Chapter 4 - Functional Programming
 ### Functional interfaces
