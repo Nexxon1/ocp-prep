@@ -31,7 +31,7 @@ public class IntermediateOperations {
    * Stream<T> distinct();
    * }</pre>
    *
-   * <p>Returns a Stream with duplicate values removed.
+   * <p>Returns a Stream with duplicate values removed. Java calls equals() to determine equality.
    */
   private static void distinct() {
     System.out.println("Intermediate operation: distinct()");
@@ -86,6 +86,9 @@ public class IntermediateOperations {
    * <p>Takes each element in the stream & makes any elements it contains top level elements in a
    * single stream --> flattens the structure
    *
+   * <p>The method signature basically says it returns a Stream of the type that the function
+   * contains at a lower level.
+   *
    * <p>Helpful to remove empty elements from a stream or combine a stream of lists
    */
   private static void flatMap() {
@@ -96,6 +99,7 @@ public class IntermediateOperations {
     Stream<List<String>> animals = Stream.of(zero, one, two);
     // With .map the result would be Stream<Stream<String>>. With flatMap the result is a
     // Stream<String>.
+    // This gets all of the animals into the same level and gets rid of the empty List.
     animals.flatMap((List<String> l) -> l.stream()).forEach(System.out::println);
     System.out.println();
   }
