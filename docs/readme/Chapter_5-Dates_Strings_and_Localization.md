@@ -81,3 +81,27 @@ Here a summary to memorize which Temporal classes can use which TemporalAmount
 | LocalDateTime/ ZonedDateTime | Yes             | Yes               |
 | LocalDate                    | Yes             | No                |
 | LocalTime                    | No              | Yes               |
+
+### Working with Instants
+- See package `basics.InstantPlayground`
+- The Instant class represents a specific moment in time in the GMT time zone
+    - Convenient to use as timer (`Instant.now();` and then compare two instance with `Duration.between(now, later);`)
+- You can convert a `ZonedDateTime` to an Instant.
+    - Instant then gets rid of the time Zone and represents the DateTime as an Instant of time in GMT.
+    - You cannot convert a LocalDateTime to an Instant unless you specify a TimeZone there.
+- Instant allows you to add any unit day or smaller. 
+    - `instant.plus(1, ChronoUnit.DAYS);`
+    - Trying to add/subtract other units results in an UnsupportedTemporalTypeException
+
+### Accounting for Daylight Savings Time
+- See package `basics.DaylightSavingsTime`
+- Some countries use daylight savings time.
+    - Here the clocks are adjusted by an hour twice a year to make better use of sunlight.
+    - The clock springs forward in spring (march) and falls back in fall (november)
+    - Not all countries participate.
+    - The countries that participate use different weekends for the change.
+    
+![Daylight savings time explanation](../assets/pictures/c5_daylight_savings_time.png "Daylight savings time explained")
+
+- When doing math with ZonedDateTimes that fall into this "time switch" Java behaves according to the image above.
+- When trying to create a time that doesn't exist (e.g. 02:30 a.m. during the March changeover) Java switches over to the appropriate offset (in this case 03:30 a.m.)
