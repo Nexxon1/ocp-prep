@@ -105,3 +105,58 @@ Here a summary to memorize which Temporal classes can use which TemporalAmount
 
 - When doing math with ZonedDateTimes that fall into this "time switch" Java behaves according to the image above.
 - When trying to create a time that doesn't exist (e.g. 02:30 a.m. during the March changeover) Java switches over to the appropriate offset (in this case 03:30 a.m.)
+
+## Reviewing the String class
+- See package `string.StringPlaygrond`
+- The String class is final and String objects are **immutable**
+- Java optimizes by storing string literals in the *String pool*
+- This lets us compare literals with `==`. However, you should always compare Strings with `equals()` so it works in all cases.
+- Java allows String concatenation using the `+` operator
+    - Concatenation goes from left to right
+    - Remember that a String concatenated with anything else is a String: 
+    ```
+    String s1 = "1" + 2 + 3 // s1 is 123
+    String s2 = 1 + 2 + "3" // s2 is 33
+    ```
+- Since String is immutable, it is inefficient when updating the value in a loop.
+- `StringBuilder` is better for that scenario
+    - StringBuilder is **mutable** and can change value and increase capacity
+    - When multiple threads are updating the same object `StringBuffer` should be used
+    - StringBuilder did not implement `equals()`, making the logic identical to comparing with `==`
+
+Comparing String, StringBuilder and StringBuffer:
+
+| Characteristic    | String | StringBuilder | StringBuffer |
+|-------------------|--------|---------------|--------------|
+| Immutable?        | Yes    | No            | No           |
+| Pooled?           | Yes    | No            | No           |
+| Thread-safe?      | Yes    | No            | Yes          |
+| Can change size?  | No     | Yes           | Yes          |
+
+## Adding Internationalization and Localization
+- **Internationalization** is the process of designing your program so it can be adapted
+    - Placing Strings in a property file
+    - Using classes like `DateFormat` so that the right format is used etc.
+    - Internationalization just means you could potentially support more than 1 language or country
+- **Localization** means actually supporting multiple locales
+    - A Locale is a specific geographical, political or cultural region
+    - Like a Pair of language & country. 
+    - Translating Strings to different languages
+    - Outputting dates & numbers in the correct format for each Locale
+- Abbreviation for internationalization & localization: **i18n** and **l10**
+
+### Picking a Locale
+- See package `i18n_and_l10n`
+- The `Locale` class is in the `java.util` package
+- Format of Locales:
+    - Example: `fr` or `en_US`
+    - First: Lowercase language code (mandatory)
+    - Second: underscore (optional)
+    - Third: Uppercase country code (optional)
+- Ways to create a Locale:
+    ```
+    Locale de = Locale.getDefault(); // e.g. de_DE
+    Locale us = Locale.US; // en_US    
+    Locale fr = new Locale("fr"); // fr
+    Locale us2 = new Locale.Builder().setRegion("US").setLanguage("en").build(); // en_US
+    ```
