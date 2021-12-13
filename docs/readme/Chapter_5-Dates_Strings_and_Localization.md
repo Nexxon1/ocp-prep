@@ -146,7 +146,7 @@ Comparing String, StringBuilder and StringBuffer:
 - Abbreviation for internationalization & localization: **i18n** and **l10**
 
 ### Picking a Locale
-- See package `i18n_and_l10n`
+- See package `i18n_and_l10n.Locales`
 - The `Locale` class is in the `java.util` package
 - Format of Locales:
     - Example: `fr` or `en_US`
@@ -160,3 +160,57 @@ Comparing String, StringBuilder and StringBuffer:
     Locale fr = new Locale("fr"); // fr
     Locale us2 = new Locale.Builder().setRegion("US").setLanguage("en").build(); // en_US
     ```
+
+### Using a Resource Bundle
+- A resource bundle contains the local specific objects to be used by a program
+- Like a map with keys and values
+- Most commonly a property file is used as resource bundle but a Java class works too.
+- With Localization we externalize our Strings in the resource bundle
+
+#### Creating a Property File Resource Bundle
+- See package `i18n_and_l10n.UsingResourceBundle`
+- The key/value pairs in the property files can occur in the following formats:
+    - ```
+      greeting=hello
+      greeting hello
+      greeting hello
+      ```
+- Lines beginning with `#` or `!` are comments
+- You can use `\` to break the line for better readability.
+- You can substitute variables in the middle of a resource bundle String.
+    - You use a number inside brackets e.g. `helloByName=Hello {0}`
+    - Then you can format it using the MessageFormat class:
+    `MessageFormat.format(resourceBundle.getString("helloByName"), "Tim");`
+
+- In addition to ResourceBundle, Java supports a class named Properties
+- Properties has additional features e.g. being able to pass a default value.
+- ResourceBundles can be converted to Properties
+
+#### Creating a Java Class Resource Bundle
+- See package `i18n_and_l10n.Zoo_en_US`
+- Naming should be the same as with Resource Bundle files. e.g. `Name_de_DE`
+- extends `ListResourceBundle`
+- Advantages over a property file:
+    - You can use a value type that is not String (keys are still Strings)
+    - You can create the values of the properties at runtime
+
+#### Determining Which Resource Bundle to Use
+```java
+// Resource Bundle with the default locale
+ResourceBundle.getBundle("name");
+// Resource Bundle with a specific locale
+ResourceBundle.getBundle("name", locale);
+```
+- Java always loads the most specific resource bundle that is available for the specified locale.
+- When there is a tie, Java class resource bundles are preferred
+- Example: Request to load resource Bundle for `new Locale("fr", "FR");`. Java attempts to load in the following order:
+    - `Name_fr_FR.java`, then `Name_fr_FR.properties`
+    - `Name_fr.java`, then `Name_fr.properties`
+    - `Name_en_US.java`, then `Name_en_US.properties` assuming that's the default locale
+    - `Name_en.java`, then `Name_en.properties`
+    - `Name.java`, then `Name.properties` - the default bundle
+    - If still not found a `MissingResourceException` is thrown
+- Note: Resource bundles don't have to specify all keys. 
+    - If Java can't find a key, it searches in the parent resource bundles.
+    - E.g. a key requested for `Name_fr_FR.java` can come from `Name_fr_FR.java`, `Name_fr.java` or `Name.java`
+ 
