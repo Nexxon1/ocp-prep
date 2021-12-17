@@ -146,7 +146,7 @@ Comparing String, StringBuilder and StringBuffer:
 - Abbreviation for internationalization & localization: **i18n** and **l10**
 
 ### Picking a Locale
-- See package `i18n_and_l10n.Locales`
+- See package `i18n_and_l10n.locale.Locales`
 - The `Locale` class is in the `java.util` package
 - Format of Locales:
     - Example: `fr` or `en_US`
@@ -168,7 +168,7 @@ Comparing String, StringBuilder and StringBuffer:
 - With Localization we externalize our Strings in the resource bundle
 
 #### Creating a Property File Resource Bundle
-- See package `i18n_and_l10n.UsingResourceBundle`
+- See package `i18n_and_l10n.resource_bundle.UsingResourceBundle`
 - The key/value pairs in the property files can occur in the following formats:
     - ```
       greeting=hello
@@ -214,3 +214,45 @@ ResourceBundle.getBundle("name", locale);
     - If Java can't find a key, it searches in the parent resource bundles.
     - E.g. a key requested for `Name_fr_FR.java` can come from `Name_fr_FR.java`, `Name_fr.java` or `Name.java`
  
+### Formatting Numbers
+- The following sections cover how to format numbers, currency and dates based on the Locale
+
+#### Format and Parse Numbers and Currency
+- See package `i18n_and_l10n.format_numbers.NumberFormatter`
+- The `NumberFormat` class provides factory methods for this. You can use the default Locale or specify a Locale in each factory method:
+
+| Description                                               | Using Default Locale               |
+|-----------------------------------------------------------|------------------------------------|
+| A general purpose formatter                               | NumberFormat.getInstance()         |
+| Same as getInstance                                       | NumberFormat.getNumberInstance()   |
+| For formatting monetary amounts                           | NumberFormat.getCurrencyInstance() |
+| For formatting percentages                                | NumberFormat.getPercentInstance()  |
+| Rounds decimal values before displaying (not on the exam) | NumberFormat.getIntegerInstance()  |
+
+- Afterwards, you can call `format()` to turn a number into a String or `parse()` to turn a String into a number.
+- Note: Format classes aren't thread-safe and should'nt be stored in instance variables or static variables
+
+### Formatting Dates and Times
+- See package `i18n_and_l10n.format_date_time.DateTimeFormatting`
+- Java provides a `DateTimeFormatter` to get information out of Dates and Times e.g. using the ISO standard or other predefined formats.
+- Legal and illegal localized formatting methods:
+
+| DateTimeFormatter f = DateTimeFormatter.(FormatStyle.SHORT); | Calling f.format(localDate) | Calling f.format(localDateTime) or(zonedDateTime) | Calling f.format(localTime) |
+|--------------------------------------------------------------|-----------------------------|---------------------------------------------------|-----------------------------|
+| ofLocalizedDate                                              | Legal—shows whole object    | Legal—shows just date part                        | Throws runtime exception    |
+| ofLocalizedDateTime                                          | Throws runtime exception    | Legal—shows whole object                          | Throws runtime exception    |
+| ofLocalizedTime                                              | Throws runtime exception    | Legal—shows just time part                        | Legal—shows whole object    |
+
+- You can also define custom formats e.g. `DateTimeFormatter.ofPattern("MMMM dd, yyyy, hh:mm")`
+    - MMMM = month. The more Ms, the more verbose.
+        - Example January: M = 1, MM = 01, MMM Jan, MMMM January 
+        (language depends on the locale).
+    - dd = day. 
+        - With dd a leading zero is added for single-digit-days.
+    - yyyy = year.
+          - yy = two-digit-year, yyyy = four-digit-year.
+    - hh = hour.
+        - With hh a leading 0 is added for a single-digit-hour.
+    - mm = minute
+        - With mm a leading 0 is added for a single-digit-minute.
+- You can also pass a DateTimeFormatter to the `parse()` method to parse from a String

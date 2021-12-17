@@ -1,4 +1,4 @@
-package de.mino.chapter5.i18n_and_l10n;
+package de.mino.chapter5.i18n_and_l10n.resource_bundle;
 
 import java.util.ListResourceBundle;
 import java.util.Locale;

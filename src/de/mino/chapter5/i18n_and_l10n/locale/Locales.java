@@ -1,4 +1,4 @@
-package de.mino.chapter5.i18n_and_l10n;
+package de.mino.chapter5.i18n_and_l10n.locale;
 
 import java.util.Locale;
 
